@@ -1,0 +1,6 @@
+{
+  "name": "ZHS Youth Parliament for Action and Change (ZYPAC)",
+  "description": "Official portal for ZHS Youth Parliament for Action and Change (ZYPAC) held on 14 November. Includes chambers, agendas, schedule, team directory, resources, and admin management.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

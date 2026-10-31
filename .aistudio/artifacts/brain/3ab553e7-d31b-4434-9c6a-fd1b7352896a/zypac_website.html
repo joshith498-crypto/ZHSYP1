@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZHS Youth Parliament for Action and Change (ZYPAC) | 14 November</title>
+  <meta name="description" content="Official portal for ZHS Youth Parliament for Action and Change (ZYPAC) on 14 November. Debate. Decide. Deliver.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            ivory: '#FAF8F5',
+            forest: '#1F3D33',
+            brass: '#B08D57',
+            charcoal: '#2B2B2B',
+            secondary: '#6B6B6B',
+            beige: '#E5E0D8',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #FAF8F5;
+      color: #2B2B2B;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    h1, h2, h3, h4, h5, h6, .font-heading {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+    .card-subtle {
+      background-color: #FAF8F5;
+      border: 1px solid #E5E0D8;
+      box-shadow: 0 4px 16px rgba(31, 61, 51, 0.05);
+    }
+  </style>
+</head>
+<body class="bg-ivory text-charcoal min-h-screen flex flex-col">
+
+  <!-- Admin Bar (visible when logged in) -->
+  <div id="adminBar" class="hidden bg-[#1F3D33] text-white border-b border-[#B08D57]/30 px-4 py-2.5 text-xs">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-[#B08D57] animate-ping"></span>
+        <span>Admin Active: <strong>xyz</strong> · Full Edit Mode Enabled</span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button onclick="logoutAdmin()" class="px-2.5 py-1 text-white/80 hover:text-white border border-white/20 rounded">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Top Navigation -->
+  <header class="sticky top-0 z-40 bg-[#FAF8F5]/95 backdrop-blur-md border-b border-[#E5E0D8]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="showPage('home')">
+        <div class="w-11 h-11 rounded-sm bg-[#1F3D33] text-[#FAF8F5] flex items-center justify-center font-heading text-2xl font-bold border border-[#B08D57]/40">
+          Z
+        </div>
+        <div class="flex flex-col">
+          <span class="font-heading text-2xl sm:text-3xl font-semibold text-[#1F3D33] leading-none">ZYPAC</span>
+          <span class="text-xs uppercase tracking-widest text-[#6B6B6B] font-medium mt-1">ZHS · 14 November</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="hidden lg:flex items-center space-x-1" id="navLinks">
+        <button onclick="showPage('home')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#1F3D33] font-semibold border-b-2 border-[#1F3D33]" data-page="home">Home</button>
+        <button onclick="showPage('about')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="about">About</button>
+        <button onclick="showPage('agendas')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="agendas">Agendas</button>
+        <button onclick="showPage('schedule')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="schedule">Schedule</button>
+        <button onclick="showPage('team')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="team">Team</button>
+        <button onclick="showPage('resources')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="resources">Resources</button>
+        <button onclick="showPage('updates')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="updates">Updates</button>
+        <button onclick="showPage('gallery')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="gallery">Gallery</button>
+        <button onclick="showPage('contact')" class="nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]" data-page="contact">Contact</button>
+      </nav>
+
+      <div class="flex items-center space-x-3">
+        <button onclick="openLoginModal()" id="adminLoginBtn" class="text-xs font-medium text-[#6B6B6B] hover:text-[#1F3D33] px-3 py-1.5 border border-[#E5E0D8] rounded-sm hover:border-[#B08D57]">
+          Admin Access
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10" id="mainContent">
+
+    <!-- HOME PAGE -->
+    <section id="view-home" class="page-view space-y-16">
+      <div class="border-y border-[#E5E0D8] py-2.5 overflow-hidden">
+        <div class="flex items-center space-x-3 text-sm">
+          <span class="px-2 py-0.5 bg-[#1F3D33] text-white text-xs uppercase font-bold rounded-xs shrink-0">Gazette Bulletin</span>
+          <span class="text-[#2B2B2B]">Registration open · Orientation Wednesday · Delegate Kit released</span>
+        </div>
+      </div>
+
+      <div class="text-center pt-6">
+        <div class="inline-block px-3.5 py-1 rounded-sm border border-[#E5E0D8] text-xs font-medium uppercase tracking-widest text-[#1F3D33] mb-6">
+          14 November · 9:00 AM – 2:00 PM
+        </div>
+        <h1 class="font-heading text-4xl sm:text-6xl md:text-7xl font-bold text-[#1F3D33] tracking-tight max-w-4xl mx-auto leading-tight mb-4">
+          ZHS Youth Parliament for Action and Change
+        </h1>
+        <div class="text-xl sm:text-2xl font-serif text-[#B08D57] italic mb-6">
+          Debate. Decide. Deliver.
+        </div>
+        <p class="max-w-2xl mx-auto text-base sm:text-lg text-[#6B6B6B] leading-relaxed mb-10">
+          &quot;ZYPAC gives every student a voice in democracy — to debate real issues, respect procedure, and build consensus.&quot;
+        </p>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto border-y border-[#E5E0D8] py-8 my-8">
+          <div>
+            <div class="font-heading text-4xl font-bold text-[#1F3D33]">60–70 Delegates</div>
+            <div class="text-xs uppercase tracking-widest text-[#6B6B6B] mt-1">Student Representatives</div>
+          </div>
+          <div>
+            <div class="font-heading text-4xl font-bold text-[#1F3D33]">2 Chambers</div>
+            <div class="text-xs uppercase tracking-widest text-[#6B6B6B] mt-1">Lok Sabha & AIPPM</div>
+          </div>
+          <div>
+            <div class="font-heading text-4xl font-bold text-[#1F3D33]">4 Sessions Each</div>
+            <div class="text-xs uppercase tracking-widest text-[#6B6B6B] mt-1">Structured Parliamentary Flow</div>
+          </div>
+        </div>
+
+        <!-- Two Huge Boxes -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mt-12">
+          <!-- Box 1: Lok Sabha -->
+          <div class="card-subtle p-8 rounded-sm flex flex-col justify-between hover:border-[#1F3D33] transition-colors">
+            <div>
+              <span class="px-2.5 py-1 text-xs font-semibold uppercase tracking-wider bg-[#1F3D33]/10 text-[#1F3D33] rounded-xs">Legislative Chamber</span>
+              <h3 class="font-heading text-4xl font-bold text-[#1F3D33] mt-3 mb-2">Lok Sabha</h3>
+              <p class="text-xs uppercase tracking-wider text-[#6B6B6B] mb-6">House of the People · Parliamentary Simulation</p>
+              <div class="p-4 bg-[#FAF8F5] border-l-2 border-[#1F3D33] mb-6">
+                <span class="block text-xs font-bold uppercase text-[#1F3D33] mb-1">Official Agenda</span>
+                <p class="text-sm text-[#2B2B2B] leading-relaxed">
+                  Discussion on the Special Intensive Revision (SIR) of Electoral Rolls and the handling of public protests in the National Capital Region: examining voter representation, democratic accountability, and the balance between public order and the right to peaceful assembly.
+                </p>
+              </div>
+            </div>
+            <button onclick="showPage('agendas')" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#1F3D33] text-white text-sm font-medium rounded-sm hover:bg-[#162c25]">
+              View Agenda →
+            </button>
+          </div>
+
+          <!-- Box 2: AIPPM -->
+          <div class="card-subtle p-8 rounded-sm flex flex-col justify-between hover:border-[#B08D57] transition-colors">
+            <div>
+              <span class="px-2.5 py-1 text-xs font-semibold uppercase tracking-wider bg-[#B08D57]/15 text-[#8b6932] rounded-xs">All-Party Consultation</span>
+              <h3 class="font-heading text-4xl font-bold text-[#1F3D33] mt-3 mb-2">AIPPM</h3>
+              <p class="text-xs uppercase tracking-wider text-[#6B6B6B] mb-6">All India Political Parties Meet</p>
+              <div class="p-4 bg-[#FAF8F5] border-l-2 border-[#B08D57] mb-6">
+                <span class="block text-xs font-bold uppercase text-[#8b6932] mb-1">Official Agenda</span>
+                <p class="text-sm text-[#2B2B2B] leading-relaxed">
+                  Deliberation on the Independence of the Media in India and the detention of journalists during public order operations: balancing Freedom of the Press, regulation, democratic accountability, and constitutional safeguards for press freedom.
+                </p>
+              </div>
+            </div>
+            <button onclick="showPage('agendas')" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#1F3D33] text-white text-sm font-medium rounded-sm hover:bg-[#162c25]">
+              View Agenda →
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-16 pt-8 border-t border-[#E5E0D8] flex justify-end">
+          <button onclick="showPage('about')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: About →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT PAGE -->
+    <section id="view-about" class="page-view hidden space-y-12 max-w-4xl mx-auto">
+      <div class="text-center">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-[#1F3D33] mb-4">What is a Youth Parliament?</h1>
+        <p class="text-lg text-[#2B2B2B] italic font-serif max-w-3xl mx-auto">
+          &quot;A practice platform where students play MPs and party leaders. You debate real national issues, follow real parliamentary procedure, and learn how decisions are made. It is a simulation of democracy — not a debate competition.&quot;
+        </p>
+      </div>
+
+      <!-- 4 Core Principles -->
+      <div class="card-subtle p-8 rounded-sm">
+        <h2 class="font-heading text-2xl font-bold text-[#1F3D33] text-center mb-6">Core Principles</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+          <div class="p-4 border border-[#E5E0D8] rounded"><h3 class="font-bold text-[#1F3D33]">Democracy</h3></div>
+          <div class="p-4 border border-[#E5E0D8] rounded"><h3 class="font-bold text-[#1F3D33]">Procedure</h3></div>
+          <div class="p-4 border border-[#E5E0D8] rounded"><h3 class="font-bold text-[#1F3D33]">Respect</h3></div>
+          <div class="p-4 border border-[#E5E0D8] rounded"><h3 class="font-bold text-[#1F3D33]">Consensus</h3></div>
+        </div>
+      </div>
+
+      <!-- Presiding Forms & What to Bring -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="card-subtle p-6 rounded-sm">
+          <h3 class="font-heading text-xl font-bold text-[#1F3D33] mb-3">How to Address the Chair</h3>
+          <p class="text-sm mb-2">Lok Sabha: <strong class="text-[#1F3D33]">&quot;Honourable Speaker&quot;</strong></p>
+          <p class="text-sm mb-4">AIPPM: <strong class="text-[#8b6932]">&quot;Honourable Chairman&quot;</strong></p>
+          <p class="text-xs text-[#6B6B6B]">All remarks must strictly be directed through the Chair.</p>
+        </div>
+        <div class="card-subtle p-6 rounded-sm">
+          <h3 class="font-heading text-xl font-bold text-[#1F3D33] mb-3">What to Bring</h3>
+          <ul class="text-sm space-y-1 list-disc pl-5 text-[#2B2B2B]">
+            <li>Notebook and pen</li>
+            <li>Briefing sheet</li>
+            <li>School uniform or formal ethnic wear</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 8 Glossary Terms -->
+      <div class="card-subtle p-6 rounded-sm">
+        <h3 class="font-heading text-2xl font-bold text-[#1F3D33] mb-4">Parliamentary Glossary</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Roll Call:</strong> Attendance verification at session start.</div>
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Question Hour:</strong> Period for questioning policies.</div>
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Amendment:</strong> Formal proposal to modify a resolution.</div>
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Communiqué:</strong> Final adopted consensus document.</div>
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Point of Order:</strong> Procedural intervention on rules.</div>
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Quorum:</strong> Minimum delegates needed for a vote.</div>
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Chit:</strong> Written note passed through floor pages.</div>
+          <div class="p-3 border border-[#E5E0D8] rounded"><strong>Chair:</strong> Presiding Officer moderating the house.</div>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('agendas')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: Agendas →</button>
+      </div>
+    </section>
+
+    <!-- AGENDAS PAGE -->
+    <section id="view-agendas" class="page-view hidden space-y-12 max-w-5xl mx-auto">
+      <div class="text-center">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-[#1F3D33] mb-2">Chamber Agendas</h1>
+        <p class="text-sm text-[#6B6B6B]">Outcome Document: <strong>Resolutions &amp; Communiqués</strong></p>
+      </div>
+
+      <!-- Lok Sabha -->
+      <div class="card-subtle p-8 rounded-sm space-y-4">
+        <h2 class="font-heading text-3xl font-bold text-[#1F3D33]">Lok Sabha</h2>
+        <div class="p-4 bg-[#FAF8F5] border-l-4 border-[#1F3D33]">
+          <p class="text-base text-[#2B2B2B]">
+            &quot;Discussion on the Special Intensive Revision (SIR) of Electoral Rolls and the handling of public protests in the National Capital Region: examining voter representation, democratic accountability, and the balance between public order and the right to peaceful assembly.&quot;
+          </p>
+        </div>
+        <h4 class="font-bold text-xs uppercase text-[#1F3D33] mt-4">Session Flow:</h4>
+        <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#2B2B2B]">
+          <li class="p-3 border border-[#E5E0D8] rounded">(1) Roll call + opening statements</li>
+          <li class="p-3 border border-[#E5E0D8] rounded">(2) Question Hour + debate — no cross-examination, no rebuttals</li>
+          <li class="p-3 border border-[#E5E0D8] rounded">(3) Amendments + voting</li>
+          <li class="p-3 border border-[#E5E0D8] rounded">(4) Summary + closing</li>
+        </ol>
+      </div>
+
+      <!-- AIPPM -->
+      <div class="card-subtle p-8 rounded-sm space-y-4">
+        <h2 class="font-heading text-3xl font-bold text-[#1F3D33]">AIPPM</h2>
+        <div class="p-4 bg-[#FAF8F5] border-l-4 border-[#B08D57]">
+          <p class="text-base text-[#2B2B2B]">
+            &quot;Deliberation on the Independence of the Media in India and the detention of journalists during public order operations: balancing Freedom of the Press, regulation, democratic accountability, and constitutional safeguards for press freedom.&quot;
+          </p>
+        </div>
+        <h4 class="font-bold text-xs uppercase text-[#8b6932] mt-4">Session Flow:</h4>
+        <ol class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-[#2B2B2B]">
+          <li class="p-3 border border-[#E5E0D8] rounded">(1) Roll call + opening positions by party leaders</li>
+          <li class="p-3 border border-[#E5E0D8] rounded">(2) Structured debate — no rebuttals</li>
+          <li class="p-3 border border-[#E5E0D8] rounded">(3) Consensus-building</li>
+          <li class="p-3 border border-[#E5E0D8] rounded">(4) Final communiqué + closing</li>
+        </ol>
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('schedule')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: Schedule →</button>
+      </div>
+    </section>
+
+    <!-- SCHEDULE PAGE -->
+    <section id="view-schedule" class="page-view hidden space-y-12 max-w-5xl mx-auto">
+      <div class="text-center">
+        <h1 class="font-heading text-4xl sm:text-6xl font-bold text-[#1F3D33] mb-2">9:00 AM – 2:00 PM</h1>
+        <p class="text-sm text-[#6B6B6B]">Saturday, 14 November · ZHS Senior Block Auditorium & Parliamentary Chambers</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Lok Sabha 4 Slots -->
+        <div class="card-subtle p-6 rounded-sm">
+          <h2 class="font-heading text-2xl font-bold text-[#1F3D33] mb-4 pb-2 border-b border-[#E5E0D8]">Lok Sabha Schedule</h2>
+          <div class="space-y-3">
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#1F3D33] text-white px-2 py-0.5 rounded">Session 1</span>
+              <p class="text-sm font-medium mt-1">Roll Call & Opening Statements</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#1F3D33] text-white px-2 py-0.5 rounded">Session 2</span>
+              <p class="text-sm font-medium mt-1">Question Hour & Structured Debate</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#1F3D33] text-white px-2 py-0.5 rounded">Session 3</span>
+              <p class="text-sm font-medium mt-1">Amendments & Voting</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#1F3D33] text-white px-2 py-0.5 rounded">Session 4</span>
+              <p class="text-sm font-medium mt-1">Summary & Speaker Closing</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- AIPPM 4 Slots -->
+        <div class="card-subtle p-6 rounded-sm">
+          <h2 class="font-heading text-2xl font-bold text-[#1F3D33] mb-4 pb-2 border-b border-[#E5E0D8]">AIPPM Schedule</h2>
+          <div class="space-y-3">
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#B08D57] text-white px-2 py-0.5 rounded">Session 1</span>
+              <p class="text-sm font-medium mt-1">Roll Call & Opening Positions by Party Leaders</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#B08D57] text-white px-2 py-0.5 rounded">Session 2</span>
+              <p class="text-sm font-medium mt-1">Structured Debate — No Rebuttals</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#B08D57] text-white px-2 py-0.5 rounded">Session 3</span>
+              <p class="text-sm font-medium mt-1">Consensus-Building</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+            <div class="p-4 border border-[#E5E0D8] rounded">
+              <span class="font-bold text-xs uppercase bg-[#B08D57] text-white px-2 py-0.5 rounded">Session 4</span>
+              <p class="text-sm font-medium mt-1">Final Communiqué & Closing</p>
+              <span class="text-xs text-[#6B6B6B] italic">(Time to be filled by Secretariat)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('team')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: Team →</button>
+      </div>
+    </section>
+
+    <!-- TEAM PAGE -->
+    <section id="view-team" class="page-view hidden space-y-12 max-w-5xl mx-auto">
+      <div class="text-center">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-[#1F3D33] mb-2">Organising Team</h1>
+        <p class="text-sm text-[#6B6B6B]">ZHS Secretariat, Presiding Officers & Parliamentary Corps</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="teamCardsGrid">
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('resources')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: Resources →</button>
+      </div>
+    </section>
+
+    <!-- RESOURCES PAGE -->
+    <section id="view-resources" class="page-view hidden space-y-8 max-w-4xl mx-auto">
+      <div class="text-center">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-[#1F3D33] mb-2">Resources</h1>
+        <p class="text-sm text-[#6B6B6B]">Official dossiers, guidelines, and templates</p>
+      </div>
+
+      <div class="card-subtle p-6 rounded-sm">
+        <h2 class="font-heading text-2xl font-bold text-[#1F3D33]">1. Research Materials</h2>
+        <p class="text-sm text-[#6B6B6B] mt-1">Background briefs on Special Intensive Revision (SIR) and media regulation.</p>
+      </div>
+      <div class="card-subtle p-6 rounded-sm">
+        <h2 class="font-heading text-2xl font-bold text-[#1F3D33]">2. Dress Code</h2>
+        <p class="text-sm text-[#6B6B6B] mt-1">Official school uniform or sober, dignified formal ethnic wear.</p>
+      </div>
+      <div class="card-subtle p-6 rounded-sm">
+        <h2 class="font-heading text-2xl font-bold text-[#1F3D33]">3. Rules of Procedure (RoP)</h2>
+        <p class="text-sm text-[#6B6B6B] mt-1">Codified parliamentary handbook for debate time, points of order, and voting.</p>
+      </div>
+      <div class="card-subtle p-6 rounded-sm">
+        <h2 class="font-heading text-2xl font-bold text-[#1F3D33]">4. Delegate Kit</h2>
+        <p class="text-sm text-[#6B6B6B] mt-1">Badge template, opening statement timing breakdown, and resolution sheets.</p>
+      </div>
+      <div class="card-subtle p-6 rounded-sm">
+        <h2 class="font-heading text-2xl font-bold text-[#1F3D33]">5. Templates</h2>
+        <p class="text-sm text-[#6B6B6B] mt-1">Official formats for Amendments, working Communiqués, and speaker chits.</p>
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('updates')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: Updates →</button>
+      </div>
+    </section>
+
+    <!-- UPDATES PAGE -->
+    <section id="view-updates" class="page-view hidden space-y-6 max-w-3xl mx-auto">
+      <div class="text-center mb-8">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-[#1F3D33] mb-2">Updates</h1>
+        <p class="text-sm text-[#6B6B6B]">Secretariat notifications (newest first)</p>
+      </div>
+
+      <div class="card-subtle p-6 rounded-sm">
+        <span class="text-xs font-mono text-[#6B6B6B]">30 October 2026</span>
+        <h3 class="font-heading text-xl font-bold text-[#1F3D33] mt-1">Delegate Kit Released</h3>
+        <p class="text-sm text-[#2B2B2B] mt-1">Official research briefing packs are now ready for registered student MPs.</p>
+      </div>
+      <div class="card-subtle p-6 rounded-sm">
+        <span class="text-xs font-mono text-[#6B6B6B]">28 October 2026</span>
+        <h3 class="font-heading text-xl font-bold text-[#1F3D33] mt-1">Orientation Wednesday Announced</h3>
+        <p class="text-sm text-[#2B2B2B] mt-1">Mandatory procedural walkthrough for all delegates in the senior hall.</p>
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('gallery')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: Gallery →</button>
+      </div>
+    </section>
+
+    <!-- GALLERY PAGE -->
+    <section id="view-gallery" class="page-view hidden space-y-8 max-w-4xl mx-auto">
+      <div class="text-center">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-[#1F3D33] mb-2">Gallery</h1>
+        <p class="text-sm text-[#6B6B6B]">Visual archives and photographic records</p>
+      </div>
+
+      <div class="text-center py-16 card-subtle rounded-sm">
+        <p class="text-sm text-[#6B6B6B]">No images uploaded to the gallery yet. Admin can upload event photos.</p>
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('contact')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Next: Contact →</button>
+      </div>
+    </section>
+
+    <!-- CONTACT PAGE -->
+    <section id="view-contact" class="page-view hidden space-y-12 max-w-4xl mx-auto">
+      <div class="text-center">
+        <h1 class="font-heading text-4xl sm:text-5xl font-bold text-[#1F3D33] mb-2">Contact</h1>
+        <p class="text-sm text-[#6B6B6B]">Official Email: <strong class="text-[#1F3D33]">zypac.secretariat@zhs.edu</strong></p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
+        <div class="card-subtle p-5 rounded-sm">
+          <span class="text-xs uppercase text-[#B08D57] font-semibold">Overall Queries</span>
+          <h4 class="font-bold text-[#1F3D33]">General Secretary</h4>
+          <p class="text-xs text-[#6B6B6B] mt-1">gensec.zypac@zhs.edu</p>
+        </div>
+        <div class="card-subtle p-5 rounded-sm">
+          <span class="text-xs uppercase text-[#B08D57] font-semibold">Registration & Delegates</span>
+          <h4 class="font-bold text-[#1F3D33]">Vice Secretary</h4>
+          <p class="text-xs text-[#6B6B6B] mt-1">delegates.zypac@zhs.edu</p>
+        </div>
+        <div class="card-subtle p-5 rounded-sm">
+          <span class="text-xs uppercase text-[#B08D57] font-semibold">Discipline & RoP</span>
+          <h4 class="font-bold text-[#1F3D33]">Head, Code of Conduct</h4>
+          <p class="text-xs text-[#6B6B6B] mt-1">conduct.zypac@zhs.edu</p>
+        </div>
+        <div class="card-subtle p-5 rounded-sm">
+          <span class="text-xs uppercase text-[#B08D57] font-semibold">Media & Documentation</span>
+          <h4 class="font-bold text-[#1F3D33]">Head, Technical & Media</h4>
+          <p class="text-xs text-[#6B6B6B] mt-1">media.zypac@zhs.edu</p>
+        </div>
+        <div class="card-subtle p-5 rounded-sm">
+          <span class="text-xs uppercase text-[#B08D57] font-semibold">Escalation</span>
+          <h4 class="font-bold text-[#1F3D33]">Teacher-in-Charge</h4>
+          <p class="text-xs text-[#6B6B6B] mt-1">advisor.zypac@zhs.edu</p>
+        </div>
+      </div>
+
+      <div class="card-subtle p-8 rounded-sm max-w-xl mx-auto">
+        <h3 class="font-heading text-2xl font-bold text-[#1F3D33] mb-4 text-center">Dispatch Secretariat Message</h3>
+        <form onsubmit="handleContactSubmit(event)" class="space-y-4 text-sm">
+          <input type="text" placeholder="Your Name" required class="w-full p-2 border border-[#E5E0D8] rounded bg-white">
+          <input type="email" placeholder="Your Email" required class="w-full p-2 border border-[#E5E0D8] rounded bg-white">
+          <textarea placeholder="Message body..." rows="3" required class="w-full p-2 border border-[#E5E0D8] rounded bg-white"></textarea>
+          <button type="submit" class="w-full py-2.5 bg-[#1F3D33] text-white font-medium rounded hover:bg-[#162c25]">Send Message</button>
+        </form>
+      </div>
+
+      <div class="pt-8 border-t border-[#E5E0D8] flex justify-end">
+        <button onclick="showPage('home')" class="font-heading text-lg font-medium text-[#1F3D33] hover:text-[#B08D57]">Back to Home →</button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-ivory border-t border-[#E5E0D8] py-12 mt-20 text-xs text-[#6B6B6B]">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div>
+        <p class="font-heading text-lg font-bold text-[#1F3D33]">ZHS Youth Parliament (ZYPAC)</p>
+        <p>14 November · zypac.secretariat@zhs.edu</p>
+      </div>
+      <div>
+        <p>© 2026 ZHS Youth Parliament for Action and Change · All Rights Reserved</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Admin Login Modal -->
+  <div id="loginModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40">
+    <div class="bg-[#FAF8F5] border border-[#E5E0D8] rounded p-6 max-w-sm w-full">
+      <h3 class="font-heading text-2xl font-bold text-[#1F3D33] mb-3">Admin Login</h3>
+      <form onsubmit="handleLogin(event)" class="space-y-3 text-sm">
+        <div>
+          <label class="block text-xs uppercase font-semibold text-[#1F3D33]">Username</label>
+          <input type="text" id="adminUser" placeholder="xyz" required class="w-full p-2 border border-[#E5E0D8] rounded bg-white">
+        </div>
+        <div>
+          <label class="block text-xs uppercase font-semibold text-[#1F3D33]">Password</label>
+          <input type="password" id="adminPass" placeholder="b1234" required class="w-full p-2 border border-[#E5E0D8] rounded bg-white">
+        </div>
+        <div id="loginErr" class="hidden text-xs text-red-600">Invalid username or password.</div>
+        <div class="flex gap-2 pt-2">
+          <button type="submit" class="flex-1 py-2 bg-[#1F3D33] text-white rounded">Login</button>
+          <button type="button" onclick="closeLoginModal()" class="px-3 py-2 border border-[#E5E0D8] rounded">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const teamMembers = [
+      { name: "Tariq Siddiqui", role: "General Secretary", desc: "Overall convenor of ZYPAC; coordinating executive operations and external liaison." },
+      { name: "Aanya Verma", role: "Vice Secretary", desc: "Directing delegate registration, credentials management, and correspondence." },
+      { name: "Faculty Advisor", role: "Teacher-in-Charge", desc: "Senior Faculty Advisor overseeing institutional compliance and academic integrity." },
+      { name: "Rohan Mukherjee", role: "Head — Orchestration, Arrangements & Registration", desc: "Managing physical chamber layouts, stationery, and daily floor logistics." },
+      { name: "Meera Nair", role: "Head — Technical, Documentation & Media", desc: "Leading audiovisual systems, chamber recording, and rapporteur documentation." },
+      { name: "Kabir Khan", role: "Head — Code of Conduct & Procedure", desc: "Ensuring adherence to parliamentary Rules of Procedure and decorum." },
+      { name: "Pooja Hegde", role: "Head — Delegate Welfare / Finance", desc: "Coordinating student health support, accessibility, and refreshments." },
+      { name: "Aditya Narayan", role: "Speaker, Lok Sabha", desc: "Presiding officer of the House of the People; regulating debate time." },
+      { name: "Zoya Qureshi", role: "Deputy Speaker, Lok Sabha", desc: "Assisting the Speaker in managing speakers list and chamber records." },
+      { name: "Harshvardhan Rao", role: "Chairman, AIPPM", desc: "Moderating the All India Political Parties Meet; encouraging consensus." },
+      { name: "Ananya Deshmukh", role: "Vice Chairman, AIPPM", desc: "Documenting multi-party positions and compiling working communiqués." },
+      { name: "Student Parliamentary Corps", role: "Volunteers (list)", desc: "Floor pages, chits couriers, and registry monitors: Bilal Ahmed, Sana Farooqi, Devansh Roy, Kritika Sen, Naman Jain, Priyanshu Pal." }
+    ];
+
+    function renderTeamCards() {
+      const grid = document.getElementById('teamCardsGrid');
+      grid.innerHTML = '';
+      teamMembers.forEach((m, idx) => {
+        const initials = m.name.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+        grid.innerHTML += `
+          <div class="card-subtle p-5 rounded-sm flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div class="w-24 h-24 shrink-0 rounded-xs bg-[#1F3D33]/10 border border-[#E5E0D8] flex flex-col items-center justify-center font-heading text-2xl font-bold text-[#1F3D33]">
+              ${initials}
+              <span class="text-[9px] uppercase tracking-wider text-[#B08D57] font-sans font-medium mt-1">Photo Slot</span>
+            </div>
+            <div>
+              <span class="text-xs uppercase tracking-wider font-semibold text-[#B08D57]">${m.role}</span>
+              <h3 class="font-heading text-xl font-bold text-[#1F3D33]">${m.name}</h3>
+              <p class="text-xs text-[#6B6B6B] mt-1">${m.desc}</p>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+      const active = document.getElementById('view-' + pageId);
+      if (active) active.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.page === pageId) {
+          btn.className = 'nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#1F3D33] font-semibold border-b-2 border-[#1F3D33]';
+        } else {
+          btn.className = 'nav-btn px-3 py-1.5 text-sm font-medium rounded-sm text-[#6B6B6B] hover:text-[#1F3D33]';
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openLoginModal() {
+      document.getElementById('loginModal').classList.remove('hidden');
+    }
+    function closeLoginModal() {
+      document.getElementById('loginModal').classList.add('hidden');
+    }
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('adminUser').value;
+      const p = document.getElementById('adminPass').value;
+      if (u === 'xyz' && p === 'b1234') {
+        document.getElementById('adminBar').classList.remove('hidden');
+        document.getElementById('adminLoginBtn').classList.add('hidden');
+        closeLoginModal();
+      } else {
+        document.getElementById('loginErr').classList.remove('hidden');
+      }
+    }
+    function logoutAdmin() {
+      document.getElementById('adminBar').classList.add('hidden');
+      document.getElementById('adminLoginBtn').classList.remove('hidden');
+    }
+    function handleContactSubmit(e) {
+      e.preventDefault();
+      alert('Your message has been transmitted to the ZYPAC Secretariat desk.');
+      e.target.reset();
+    }
+
+    renderTeamCards();
+  </script>
+</body>
+</html>
