@@ -37,29 +37,59 @@ import { GalleryView } from './components/views/GalleryView';
 import { ContactView } from './components/views/ContactView';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<PageId>(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const pageParam = params.get('page') as PageId;
-      if (
-        pageParam &&
-        [
-          'home',
-          'about',
-          'agendas',
-          'schedule',
-          'team',
-          'resources',
-          'updates',
-          'gallery',
-          'contact',
-        ].includes(pageParam)
-      ) {
-        return pageParam;
-      }
+  const VALID_PAGES: PageId[] = [
+    'home',
+    'about',
+    'agendas',
+    'schedule',
+    'team',
+    'resources',
+    'updates',
+    'gallery',
+    'contact',
+  ];
+
+  const getInitialPage = (): PageId => {
+    if (typeof window === 'undefined') return 'home';
+    const params = new URLSearchParams(window.location.search);
+    const pageParam = params.get('page') as PageId;
+    if (pageParam && VALID_PAGES.includes(pageParam)) {
+      return pageParam;
+    }
+    // Check hash (e.g. #/about or #about)
+    const cleanHash = window.location.hash.replace(/^#\/?/, '').split('?')[0] as PageId;
+    if (cleanHash && VALID_PAGES.includes(cleanHash)) {
+      return cleanHash;
     }
     return 'home';
-  });
+  };
+
+  const [currentPage, setCurrentPage] = useState<PageId>(getInitialPage);
+
+  // Sync active page to URL hash so page refreshes and direct links work cleanly on GitHub Pages
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const currentHash = window.location.hash.replace(/^#\/?/, '').split('?')[0];
+      const targetHash = currentPage === 'home' ? '' : `#${currentPage}`;
+      if (currentHash !== currentPage && !(currentPage === 'home' && !currentHash)) {
+        window.history.replaceState(null, '', targetHash || window.location.pathname + window.location.search);
+      }
+    }
+  }, [currentPage]);
+
+  // Listen to browser navigation (back/forward and hashchange)
+  useEffect(() => {
+    const handleLocationChange = () => {
+      const page = getInitialPage();
+      setCurrentPage(page);
+    };
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+    return () => {
+      window.removeEventListener('hashchange', handleLocationChange);
+      window.removeEventListener('popstate', handleLocationChange);
+    };
+  }, []);
 
   const [data, setData] = useState<AppData>(() => loadStoredAppData());
   const [isAdmin, setIsAdmin] = useState<boolean>(() => {

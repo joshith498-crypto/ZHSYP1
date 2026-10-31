@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ZHS Youth Parliament for Action and Change (ZYPAC)</title>
+    <script>
+      // Single Page Application redirect script for GitHub Pages
+      // Converts 404 paths to query or hash parameters and redirects to index.html
+      (function () {
+        var pathSegmentsToKeep = 1; // 1 segment for https://username.github.io/repo-name/
+        var l = window.location;
+        // If hosted on a custom domain at root, pathSegmentsToKeep could be 0
+        var isGithubIo = l.hostname.indexOf('github.io') !== -1;
+        var repoSegments = isGithubIo ? 1 : 0;
+        
+        var pathArray = l.pathname.split('/').filter(Boolean);
+        var repoName = isGithubIo && pathArray.length > 0 ? '/' + pathArray[0] : '';
+        var remainingPath = isGithubIo ? pathArray.slice(1).join('/') : pathArray.join('/');
+
+        var redirectTarget = repoName + '/';
+        if (remainingPath) {
+          redirectTarget += '#/' + remainingPath;
+        }
+        if (l.search) {
+          redirectTarget += (remainingPath ? '&' : '?') + l.search.slice(1);
+        }
+        if (l.hash) {
+          redirectTarget += l.hash;
+        }
+
+        window.location.replace(redirectTarget);
+      })();
+    </script>
+  </head>
+  <body style="font-family: sans-serif; text-align: center; padding-top: 50px; background-color: #FAF8F5; color: #1F3D33;">
+    <p>Loading ZYPAC portal...</p>
+    <p><a href="./">Click here if you are not redirected automatically</a></p>
+  </body>
+</html>

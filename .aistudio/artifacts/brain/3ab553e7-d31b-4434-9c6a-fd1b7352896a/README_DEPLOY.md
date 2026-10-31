@@ -1,24 +1,55 @@
-# 🏛️ ZYPAC Parliamentary Portal — Deployment Package
+# How to Host ZYPAC on GitHub Pages
 
-Your complete **ZHS Youth Parliament for Action and Change (ZYPAC)** portal has been enhanced with **3D interactive liquid-glass panels**, and all download/export buttons have been cleanly removed from the live website interface.
-
----
-
-### 📦 Downloadable Files in This Chat
-1. **`zypac_website.zip`** (168 KB) — Pre-compiled, Netlify-ready production bundle (click the artifact card or download button above).
-2. **`index.html`** / **`zypac_website.html`** — Standalone self-contained single-file versions you can open directly in Google Chrome.
+This project is configured and verified to run on **GitHub Pages** (both `https://<username>.github.io/<repo-name>/` and custom domains).
 
 ---
 
-### 🚀 How to Launch on Netlify in Under 60 Seconds:
-1. Download **`zypac_website.zip`** from this chat.
-2. In your browser, open **[app.netlify.com/drop](https://app.netlify.com/drop)**.
-3. Drag and drop **`zypac_website.zip`** onto the Netlify upload target.
-4. Netlify will immediately generate your live, public HTTPS URL (e.g., `https://zypac-2026.netlify.app`).
+## Why GitHub Pages Often Fails & What We Fixed
+1. **Relative Asset Paths (`base: './'`)**: Default Vite configs generate absolute asset paths (`/assets/index.js`), which 404 when hosted inside a repository subfolder (`github.io/my-repo/`). We configured `base: './'` in `vite.config.ts`, ensuring assets resolve relatively in any subfolder or custom domain.
+2. **Jekyll Processing Bypassed (`.nojekyll`)**: GitHub Pages runs Jekyll by default, which hides or ignores files and folders with underscores. We added `.nojekyll` to the output.
+3. **SPA Routing Fallback (`404.html`)**: When users refresh or share a link to a section, GitHub Pages serves `404.html`. We added a smart SPA redirect script in `404.html` so direct reloads or bookmarks instantly redirect and render the correct page.
+4. **Automated GitHub Actions (`.github/workflows/deploy.yml`)**: Pre-configured workflow to build and deploy on every `git push`.
 
 ---
 
-### 🌐 Running Locally in Google Chrome:
-- Extract `zypac_website.zip` and double-click `index.html` to open it in Google Chrome.
-- All 9 pages (Home, About, Agendas, Schedule, Team, Resources, Updates, Gallery, Contact) work seamlessly.
-- Secretariat Admin mode (`xyz` / `b1234`) remains fully functional with localStorage persistence.
+## Method 1: Automatic Push-to-Deploy with GitHub Actions (Recommended)
+
+1. **Create a GitHub Repository**:
+   - Go to [github.com/new](https://github.com/new) and create a repository (e.g. `zypac`).
+2. **Push your code to GitHub**:
+   ```bash
+   git init
+   git add .
+   git commit -m "Initial commit for ZYPAC portal"
+   git branch -M main
+   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+   git push -u origin main
+   ```
+3. **Turn on GitHub Pages**:
+   - On GitHub, click on **Settings** → **Pages** (in the left sidebar).
+   - Under **Build and deployment > Source**, select **GitHub Actions**.
+   - That's it! GitHub will automatically trigger the included workflow (`.github/workflows/deploy.yml`), compile the project, and publish your live website at `https://<your-username>.github.io/<your-repo-name>/`.
+
+---
+
+## Method 2: Direct Static Deploy (Without CI)
+
+If you only want to host the pre-built HTML/CSS/JS without setting up Node.js or Actions:
+
+1. In your terminal:
+   ```bash
+   npm run deploy
+   ```
+   *(This uses `gh-pages` to automatically publish the `dist` folder to your `gh-pages` branch).*
+2. In **Settings** → **Pages**:
+   - Under **Source**, select **Deploy from a branch**.
+   - Under **Branch**, select `gh-pages` and `/ (root)`, then click **Save**.
+
+---
+
+## Method 3: Manual Upload via GitHub Web Interface
+
+1. Extract the contents of `zypac_github_pages_dist.zip`.
+2. In your GitHub repository, create a branch named `gh-pages`.
+3. Drag and drop all the files from `zypac_github_pages_dist.zip` (including `index.html`, `404.html`, `.nojekyll`, and the `assets` folder) directly into the repository.
+4. In **Settings** → **Pages**, select branch `gh-pages` and `/ (root)`.

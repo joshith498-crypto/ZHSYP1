@@ -1,5 +1,5 @@
 {
-  "summary":  "ZYPAC website deployment package and offline launcher. Contains steps for 1-click Netlify drag-and-drop hosting and direct local opening in Google Chrome.",
-  "updatedAt":  "2026-10-31T15:40:30.316591124Z",
+  "summary":  "Step-by-step guide for hosting ZYPAC on GitHub Pages using either automatic GitHub Actions or direct static file deployment. Covers base relative URLs, .nojekyll bypass, and SPA 404 routing.",
+  "updatedAt":  "2026-10-31T16:28:10.295548405Z",
   "userFacing":  true
 }
