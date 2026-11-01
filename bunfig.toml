@@ -1,6 +1,0 @@
-# Bun configuration for Cloudflare Workers & Pages CI/CD
-[install]
-frozen = false
-save = true
-exact = false
-prefer = "offline"
