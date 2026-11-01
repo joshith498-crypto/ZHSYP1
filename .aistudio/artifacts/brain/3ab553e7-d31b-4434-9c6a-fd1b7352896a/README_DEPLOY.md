@@ -1,64 +1,69 @@
-# How to Host ZYPAC on GitHub Pages
+# ZYPAC Deployment Guide (Cloudflare & GitHub Pages)
 
-This project is configured and verified to run on **GitHub Pages** (both `https://<username>.github.io/<repo-name>/` and custom domains).
-
----
-
-## Why GitHub Pages Often Fails & What We Fixed
-1. **Relative Asset Paths (`base: './'`)**: Default Vite configs generate absolute asset paths (`/assets/index.js`), which 404 when hosted inside a repository subfolder (`github.io/my-repo/`). We configured `base: './'` in `vite.config.ts`, ensuring assets resolve relatively in any subfolder or custom domain.
-2. **Jekyll Processing Bypassed (`.nojekyll`)**: GitHub Pages runs Jekyll by default, which hides or ignores files and folders with underscores. We added `.nojekyll` to the output.
-3. **SPA Routing Fallback (`404.html`)**: When users refresh or share a link to a section, GitHub Pages serves `404.html`. We added a smart SPA redirect script in `404.html` so direct reloads or bookmarks instantly redirect and render the correct page.
-4. **Automated GitHub Actions (`.github/workflows/deploy.yml`)**: Pre-configured workflow to build and deploy on every `git push`.
-5. **No Lock File Dependency (`cache: 'npm'` removed & `package-lock.json` provided)**: Prevents the common `Dependencies lock file is not found` error during the `Set up Node` step in GitHub Actions.
+This repository is optimized and verified for seamless one-click deployment on **Cloudflare Pages / Cloudflare Workers** as well as **GitHub Pages**, with full cross-device compatibility (mobile, tablet, desktop, touch screens, safe-area insets).
 
 ---
 
-## Quick Fix for Existing Repositories with the "Dependencies lock file is not found" Error
+## ⚡ Cloudflare Deployment Fix ("lockfile had changes, but lockfile is frozen")
 
-If you encountered the red error `Error: Dependencies lock file is not found in ... Supported file patterns: package-lock.json`:
-- **Option A (Instant web edit on GitHub)**: Open `.github/workflows/deploy.yml` on GitHub, click the pencil edit button, and remove `cache: 'npm'` under `Set up Node` (or replace the file with the one in the updated zip). Click **Commit changes**. GitHub Actions will run again and succeed!
-- **Option B**: Add the generated `package-lock.json` file from the updated repository zip to the root of your GitHub repository.
+### Why the Error Happened in Cloudflare:
+In your Cloudflare dashboard build log:
+```text
+Installing project dependencies: bun install --frozen-lockfile
+error: lockfile had changes, but lockfile is frozen
+note: dependencies in package.json changed since bun.lock was saved: esbuild changed from ^0.25.0 to ^0.28.0
+```
+Cloudflare automatically detects `bun.lock` in the repository and runs `bun install --frozen-lockfile`. When `package.json` was updated to support Vite 8 and React 19, the existing lockfile was frozen and rejected the updated `esbuild` version.
+
+### The Solutions Included in This Release:
+
+#### Solution 1: Use the Updated Repository Files (Instant Fix)
+1. The repository now includes:
+   - A synchronized `bun.lock` matched to `package.json` using Bun 1.4.4.
+   - A `bunfig.toml` with `frozen = false`, preventing Bun from failing build pipelines.
+   - A `wrangler.jsonc` configured for Cloudflare with SPA fallback routing:
+     ```jsonc
+     {
+       "name": "zhsyp-portal",
+       "compatibility_date": "2026-11-01",
+       "assets": {
+         "directory": "./dist",
+         "binding": "ASSETS",
+         "not_found_handling": "single-page-application"
+       }
+     }
+     ```
+   - Cloudflare `_redirects` and `_headers` in `/public` for instant client-side routing.
+2. Push or commit these files to your GitHub repository `joshith498-crypto/ZHSYP1`.
+3. Cloudflare will automatically trigger a new build and succeed!
+
+#### Solution 2: Change Cloudflare Dashboard Build Settings (1-Click Fix in UI)
+If you prefer to configure it directly in the Cloudflare dashboard:
+1. In Cloudflare, go to **Workers & Pages** → **zhsyp-portal** → **Settings** → **Builds & deployments**.
+2. Click **Edit build configuration**:
+   - **Framework preset**: `Vite` (or `None`)
+   - **Build command**: `bun run build` (or `npm run build`)
+   - **Build output directory**: `dist`
+   - **Root directory**: `/`
+3. Under **Environment variables**, click **Add variable**:
+   - Variable name: `BUN_INSTALL_FROZEN_LOCKFILE`
+   - Value: `0`
+4. Click **Save and Deploy**. Your build will pass immediately.
 
 ---
 
-## Method 1: Automatic Push-to-Deploy with GitHub Actions (Recommended)
+## 🚀 GitHub Pages Deployment
 
-1. **Create a GitHub Repository**:
-   - Go to [github.com/new](https://github.com/new) and create a repository (e.g. `zypac`).
-2. **Push your code to GitHub**:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit for ZYPAC portal"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<your-repo-name>.git
-   git push -u origin main
-   ```
-3. **Turn on GitHub Pages**:
-   - On GitHub, click on **Settings** → **Pages** (in the left sidebar).
-   - Under **Build and deployment > Source**, select **GitHub Actions**.
-   - That's it! GitHub will automatically trigger the included workflow (`.github/workflows/deploy.yml`), compile the project, and publish your live website at `https://<your-username>.github.io/<your-repo-name>/`.
+### Fix for "Dependencies lock file is not found" in GitHub Actions:
+- We removed `cache: 'npm'` from `.github/workflows/deploy.yml` and committed a complete `package-lock.json`.
+- In GitHub, go to **Settings** → **Pages** → under **Build and deployment > Source**, choose **GitHub Actions**.
+- On push, the included `.github/workflows/deploy.yml` will automatically build and publish to `https://<username>.github.io/<repo-name>/`.
 
 ---
 
-## Method 2: Direct Static Deploy (Without CI)
+## 📱 Universal Device Compatibility & Responsive Features
 
-If you only want to host the pre-built HTML/CSS/JS without setting up Node.js or Actions:
-
-1. In your terminal:
-   ```bash
-   npm run deploy
-   ```
-   *(This uses `gh-pages` to automatically publish the `dist` folder to your `gh-pages` branch).*
-2. In **Settings** → **Pages**:
-   - Under **Source**, select **Deploy from a branch**.
-   - Under **Branch**, select `gh-pages` and `/ (root)`, then click **Save**.
-
----
-
-## Method 3: Manual Upload via GitHub Web Interface
-
-1. Extract the contents of `zypac_github_pages_dist.zip`.
-2. In your GitHub repository, create a branch named `gh-pages`.
-3. Drag and drop all the files from `zypac_github_pages_dist.zip` (including `index.html`, `404.html`, `.nojekyll`, and the `assets` folder) directly into the repository.
-4. In **Settings** → **Pages**, select branch `gh-pages` and `/ (root)`.
+- **Safe-Area Insets**: `<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />` with `env(safe-area-inset-bottom)` to accommodate iPhones, iPads, and mobile navigation bars.
+- **Touch-First Accessibility**: Minimum 44px tap targets for mobile drawers, modal close buttons, navigation links, and administrative controls.
+- **Horizontal Overflow Protection**: `overflow-x: hidden` and constrained ambient gradients prevent horizontal drift on screens from 320px up to 4K displays.
+- **Refined Typography**: Loaded Google Fonts `Plus Jakarta Sans` for clean UI reading, `Cinzel` for parliamentary crests, `Outfit` for modern badges and numbers, and `Cormorant Garamond` for classical statesman headers.

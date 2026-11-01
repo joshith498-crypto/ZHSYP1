@@ -30,14 +30,14 @@ export const Footer: React.FC<FooterProps> = ({
           {/* Main School & Event Identity */}
           <div className="md:col-span-5 space-y-3">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 rounded-sm bg-[#1F3D33] text-[#FAF8F5] flex items-center justify-center font-heading text-lg font-bold">
+              <div className="w-8 h-8 rounded-sm bg-[#1F3D33] text-[#FAF8F5] flex items-center justify-center font-crest text-lg font-bold border border-[#B08D57]/40 shadow-xs">
                 {branding.schoolName.charAt(0)}
               </div>
-              <span className="font-heading text-2xl font-semibold text-[#1F3D33]">
+              <span className="font-heading text-2xl font-semibold text-[#1F3D33] tracking-tight">
                 {branding.eventName}
               </span>
             </div>
-            <p className="text-base text-[#2B2B2B] font-serif-header font-medium">
+            <p className="text-base text-[#2B2B2B] font-heading font-medium">
               {branding.footerSchoolTitle}
             </p>
             <p className="text-sm text-[#6B6B6B] leading-relaxed max-w-sm">

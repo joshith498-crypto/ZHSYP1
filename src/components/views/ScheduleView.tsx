@@ -37,12 +37,12 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({
         className="p-5 border border-white/80 rounded-xs hover:border-[#1F3D33]/40 transition-colors relative group"
       >
         <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center space-x-2">
-            <span className="px-2 py-0.5 text-xs font-bold uppercase tracking-wider bg-[#1F3D33] text-[#FAF8F5] rounded-xs shadow-xs">
+          <div className="flex items-center space-x-2 flex-wrap gap-y-1">
+            <span className="px-2.5 py-1 font-display text-[11px] font-bold uppercase tracking-wider bg-[#1F3D33] text-[#FAF8F5] rounded-xs shadow-xs">
               {slot.sessionLabel}
             </span>
             <span
-              className={`text-xs font-mono font-medium ${
+              className={`font-display text-xs font-semibold tabular-nums ${
                 hasTime ? 'text-[#1F3D33]' : 'text-[#6B6B6B] italic'
               }`}
             >
@@ -53,10 +53,10 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({
           {isAdmin && (
             <button
               onClick={() => onEditSlot(chamber, slot.id)}
-              className="text-xs text-[#B08D57] hover:text-[#1F3D33] flex items-center gap-1 cursor-pointer"
+              className="text-xs text-[#B08D57] hover:text-[#1F3D33] flex items-center gap-1 cursor-pointer min-h-[36px] px-2"
               title={`Edit ${slot.sessionLabel} timing and notes`}
             >
-              <Edit2 className="w-3 h-3" />
+              <Edit2 className="w-3.5 h-3.5" />
               <span>{hasTime ? 'Edit Time' : 'Fill Time'}</span>
             </button>
           )}
@@ -76,36 +76,36 @@ export const ScheduleView: React.FC<ScheduleViewProps> = ({
   };
 
   return (
-    <div className="space-y-16 max-w-6xl mx-auto">
+    <div className="space-y-16 max-w-6xl mx-auto w-full">
       {/* Header with 9:00 AM – 2:00 PM */}
       <section className="text-center pt-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm border border-white/80 bg-white/60 backdrop-blur-md shadow-xs text-xs font-semibold uppercase tracking-widest text-[#B08D57] mb-4">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-sm border border-white/80 bg-white/70 backdrop-blur-md shadow-xs font-display text-xs font-semibold uppercase tracking-[0.2em] text-[#B08D57] mb-4">
           <Clock className="w-3.5 h-3.5" />
           <span>Official Timetable · 14 November</span>
         </div>
 
-        <h1 className="font-heading text-4xl sm:text-6xl font-bold text-[#1F3D33] tracking-tight mb-2">
+        <h1 className="font-display text-4xl sm:text-6xl font-bold text-[#1F3D33] tracking-tight mb-2 tabular-nums">
           {data.headerTime}
         </h1>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-[#6B6B6B] mt-2">
           <span className="flex items-center gap-1.5 text-center">
             <Calendar className="w-4 h-4 text-[#B08D57] shrink-0" />
-            <span>{data.dateDisplay}</span>
+            <span className="font-medium">{data.dateDisplay}</span>
           </span>
           <span className="hidden sm:inline text-[#E5E0D8]">·</span>
           <span className="flex items-center gap-1.5 text-center">
             <MapPin className="w-4 h-4 text-[#B08D57] shrink-0" />
-            <span>{data.venueNote}</span>
+            <span className="font-medium">{data.venueNote}</span>
           </span>
         </div>
 
         {isAdmin && (
           <button
             onClick={onEditHeader}
-            className="mt-4 text-xs text-[#B08D57] hover:text-[#1F3D33] inline-flex items-center gap-1 cursor-pointer"
+            className="mt-4 text-xs text-[#B08D57] hover:text-[#1F3D33] inline-flex items-center gap-1 cursor-pointer min-h-[36px] px-2"
           >
-            <Edit2 className="w-3 h-3" />
+            <Edit2 className="w-3.5 h-3.5" />
             <span>Edit Schedule Header &amp; Venue</span>
           </button>
         )}
