@@ -31,7 +31,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
@@ -40,9 +40,12 @@ jobs:
         run: npm run build
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
+          NODE_ENV: production
 
-      - name: Ensure .nojekyll is present in dist
-        run: touch dist/.nojekyll
+      - name: Ensure .nojekyll and clean dist
+        run: |
+          rm -f dist/*.zip
+          touch dist/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

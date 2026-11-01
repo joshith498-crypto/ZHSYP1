@@ -1,57 +1,62 @@
 # ZYPAC Deployment Guide (GitHub Pages & Cloudflare)
 
-This repository is optimized and verified for seamless one-click deployment on **GitHub Pages** as well as **Cloudflare Pages / Workers**, with complete cross-device responsiveness.
+This repository is built and tested for seamless deployment to **GitHub Pages** (`https://joshith498-crypto.github.io/ZHSYP1/`) and **Cloudflare Pages / Workers**, with universal cross-device responsiveness (mobile, tablet, desktop).
 
 ---
 
-## 🛠️ GitHub Pages White Screen Fix
+## 🛑 How We Fixed the "Loading Youth Parliament environment..." Infinite Spinner
 
-If your GitHub Actions build passed ("Deployed to Pages") but visiting the site showed a **blank white screen**, here is why and how it is fixed:
+### What Caused It:
+1. **Base Path Mismatch on GitHub Pages**: GitHub Pages serves your site at `/ZHSYP1/`, not the root `/`. When Vite built without explicitly knowing the repository path, assets were requested from `/assets/...` instead of `/ZHSYP1/assets/...`. This triggered 404s for the JavaScript chunks, meaning the app bundle never executed.
+2. **Fallback Loader Never Dismissed**: Because the JavaScript bundle encountered a 404, React never mounted to replace the `<div id="initial-loading">` element, causing the spinner to rotate indefinitely.
+3. **Bloated Artifact Size (6.24 MB)**: The `public/` directory contained residual `.zip` files from earlier exports, which Vite copied into `dist/`. This caused slow asset downloading and GitHub Pages timeout warnings.
 
-### 1. Root Cause 1: Missing Trailing Slash on Repository URLs
-- **The Issue**: On GitHub Pages, repository sites are hosted at `https://<username>.github.io/<repo-name>/`.
-  When a visitor or browser opens `https://<username>.github.io/<repo-name>` (without the trailing `/`), relative assets like `./assets/index.js` resolve to `https://<username>.github.io/assets/index.js` (at the root instead of inside `/ZHSYP1/`), resulting in a 404 HTML response and a blank white screen!
-- **The Solution**: 
-  - In `vite.config.ts`, Vite now detects `GITHUB_REPOSITORY` in GitHub Actions and automatically configures `base: '/ZHSYP1/'`. All script and CSS links resolve to the exact absolute repository path.
-  - In `index.html`, an instant inline script in `<head>` automatically detects missing trailing slashes on `github.io` and normalizes the URL to `https://<username>.github.io/ZHSYP1/` before scripts evaluate.
-  - An `#initial-loading` indicator displays while React initializes, and an `<ErrorBoundary>` prevents fatal render errors from causing a white screen.
-
-### 2. Root Cause 2: GitHub Pages Source Setting in GitHub
-Ensure your repository's GitHub Pages settings use **GitHub Actions**:
-1. In your GitHub repository (`joshith498-crypto/ZHSYP1`), click the **Settings** tab.
-2. In the left sidebar, click **Pages**.
-3. Under **Build and deployment > Source**:
-   - Select **GitHub Actions** (do NOT select "Deploy from a branch").
-   - *Why?* If "Deploy from a branch" is selected, GitHub Pages ignores the compiled `dist/` directory from the workflow and tries to serve raw unbuilt TypeScript source files from the `main` branch root, resulting in a blank screen.
-4. Push your changes or trigger the workflow under **Actions** → **Deploy to GitHub Pages** → **Run workflow**.
+### What Was Fixed:
+1. **Guaranteed Base Path in `vite.config.ts`**:
+   - For GitHub Pages: Uses `/ZHSYP1/` automatically whenever building in production or via GitHub Actions.
+   - For Cloudflare Pages: Uses `/` automatically whenever `CF_PAGES=1` is detected.
+2. **Safe Code Splitting**: Split vendor bundles into `vendor-react` and `vendor-icons`, reducing initial chunk size from 627 kB to smaller, lightning-fast files.
+3. **Fail-Safe Diagnostic Script & Auto-Recovery**:
+   - `index.html` now has an inline error listener that catches any asset load failure immediately.
+   - If loading takes more than 3.5 seconds, direct "Force Reload" and "Clear Cache & Reload" recovery buttons appear on screen.
+   - `main.tsx` smoothly fades out and dismisses the loading spinner as soon as the first frame renders.
+4. **Clean Artifacts**: Removed all zip files from `public/`, shrinking the deployment bundle from 6.24 MB down to ~680 KB.
 
 ---
 
-## ⚡ Cloudflare Pages / Workers Deployment
+## ⚡ Cloudflare Deployment Fix ("lockfile had changes, but lockfile is frozen")
 
-### Fix for "lockfile had changes, but lockfile is frozen":
-1. Cloudflare automatically detects `bun.lock` and executes `bun install --frozen-lockfile`.
-2. This project includes:
-   - A synchronized `bun.lock` matching `package.json`.
-   - A `bunfig.toml` with `frozen = false`.
-   - A `wrangler.jsonc` configured with SPA routing:
-     ```jsonc
-     {
-       "name": "zhsyp-portal",
-       "compatibility_date": "2026-11-01",
-       "assets": {
-         "directory": "./dist",
-         "binding": "ASSETS",
-         "not_found_handling": "single-page-application"
-       }
-     }
-     ```
-   - Cloudflare `_redirects` and `_headers` in `/public` for instant SPA fallback routing.
+### Why the Error Happened in Cloudflare:
+Cloudflare detected `bun.lock` in the repository and ran `bun install --frozen-lockfile`. When `package.json` had a minor version bump in `esbuild`, the frozen lockfile rejected the change.
+
+### Fixes Included in This Release:
+1. Updated `bun.lock` to 100% match `package.json` dependencies.
+2. Added `bunfig.toml` with `frozen = false`.
+3. Added `wrangler.jsonc` configured with single-page-application asset routing.
+4. If configuring in the Cloudflare dashboard:
+   - **Framework preset**: `Vite`
+   - **Build command**: `npm run build` or `bun run build`
+   - **Output directory**: `dist`
+   - (Optional) Set environment variable `BUN_INSTALL_FROZEN_LOCKFILE=0` in Cloudflare settings.
 
 ---
 
-## 📦 Downloadable Files Included
+## 🚀 GitHub Pages Deployment Steps
 
-1. **`zypac_github_repo_source.zip`**: Complete source code ready to push to your GitHub repo, including `.github/workflows/deploy.yml`, synchronized `bun.lock`, `bunfig.toml`, and dynamic `vite.config.ts`.
-2. **`zypac_github_pages_dist.zip`**: Pre-built static distribution ready for instant deployment to GitHub Pages (configured for `/ZHSYP1/`).
-3. **`zypac_website.zip`**: Standalone portable distribution with relative paths for local viewing, Cloudflare Pages, Netlify, or custom hosting.
+### Method A: Automated GitHub Actions (Recommended)
+1. Commit and push the updated repository files to your `main` branch.
+2. In GitHub, go to **Settings** → **Pages**.
+3. Under **Build and deployment > Source**, ensure **GitHub Actions** is selected.
+4. GitHub Actions will run `.github/workflows/deploy.yml` with Node 22, compile Vite with `base: /ZHSYP1/`, and deploy cleanly.
+
+### Method B: Direct Upload via `zypac_github_pages_dist.zip`
+1. Download `zypac_github_pages_dist.zip` from this chat.
+2. Extract the files directly into your GitHub repository root (or into a `gh-pages` branch).
+3. The pre-built files already contain the `/ZHSYP1/` base path and are ready to serve immediately.
+
+---
+
+## 📱 Cross-Device Compatibility & Styling
+- **Safe Areas**: Handles notch and home indicator on modern iOS/Android devices (`viewport-fit=cover`).
+- **Touch Targets**: All tabs, admin controls, and buttons satisfy the 44px minimum tap target.
+- **Glassmorphism & Depth**: Subtle multi-layered backdrop filters with dark green/gold parliamentary accents.

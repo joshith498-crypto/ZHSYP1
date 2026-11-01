@@ -1,5 +1,5 @@
 {
-  "summary":  "Step-by-step guide for hosting ZYPAC on GitHub Pages using either automatic GitHub Actions or direct static file deployment. Covers base relative URLs, .nojekyll bypass, and SPA 404 routing.",
-  "updatedAt":  "2026-10-31T16:28:10.295548405Z",
+  "summary":  "Deployment guide explaining the fix for the infinite loading spinner on GitHub Pages, the Cloudflare bun lockfile resolution, and step-by-step instructions.",
+  "updatedAt":  "2026-11-01T10:19:25.349757260Z",
   "userFacing":  true
 }

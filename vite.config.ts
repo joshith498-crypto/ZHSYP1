@@ -3,17 +3,21 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig} from 'vite';
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
   // Dynamic base determination for maximum compatibility across hosts:
-  // - GitHub Actions sets GITHUB_REPOSITORY (e.g. "joshith498-crypto/ZHSYP1") -> base = "/ZHSYP1/"
-  // - Cloudflare Pages sets CF_PAGES -> base = "/"
-  // - Custom override via VITE_BASE
-  // - Default to './' for fully portable relative links
+  // - BASE_URL or VITE_BASE environment override
+  // - Cloudflare Pages (CF_PAGES=1) -> "/"
+  // - GitHub Actions (GITHUB_REPOSITORY) -> "/<repo>/"
+  // - Production default for this project -> "/ZHSYP1/" (guarantees absolute paths on GitHub Pages)
+  // - Local / Dev default -> "/"
   const getBase = () => {
+    if (process.env.BASE_URL) {
+      return process.env.BASE_URL.endsWith('/') ? process.env.BASE_URL : `${process.env.BASE_URL}/`;
+    }
     if (process.env.VITE_BASE) {
       return process.env.VITE_BASE;
     }
-    if (process.env.CF_PAGES) {
+    if (process.env.CF_PAGES || process.env.VERCEL || process.env.NETLIFY) {
       return '/';
     }
     if (process.env.GITHUB_REPOSITORY) {
@@ -24,7 +28,10 @@ export default defineConfig(() => {
       }
       return '/';
     }
-    return './';
+    if (mode === 'production') {
+      return '/ZHSYP1/';
+    }
+    return '/';
   };
 
   return {
@@ -33,6 +40,23 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@': path.resolve('.'),
+      },
+    },
+    build: {
+      outDir: 'dist',
+      assetsDir: 'assets',
+      sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks(id: string) {
+            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+              return 'vendor-react';
+            }
+            if (id.includes('node_modules/lucide-react')) {
+              return 'vendor-icons';
+            }
+          },
+        },
       },
     },
     server: {
