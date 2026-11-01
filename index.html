@@ -12,13 +12,41 @@
     <meta property="og:description" content="Official portal for ZHS Youth Parliament for Action and Change (ZYPAC) on 14 November. Debate. Decide. Deliver." />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- GitHub Pages Trailing-Slash Auto-Correction (Prevents 404 on relative asset loads) -->
+    <script>
+      (function() {
+        var l = window.location;
+        if (
+          l.hostname.endsWith('github.io') &&
+          l.pathname &&
+          !l.pathname.endsWith('/') &&
+          !l.pathname.split('/').pop().includes('.')
+        ) {
+          l.replace(l.pathname + '/' + l.search + l.hash);
+        }
+      })();
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
   </head>
   <body class="bg-[#FAF8F5] text-[#2B2B2B] antialiased selection:bg-[#B08D57]/20 selection:text-[#1F3D33] overflow-x-hidden min-h-screen">
-    <div id="root"></div>
+    <div id="root">
+      <!-- Fallback loader visible only while the JS bundle is initializing -->
+      <div id="initial-loading" style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background-color: #FAF8F5; color: #1F3D33; text-align: center; padding: 20px;">
+        <div style="width: 48px; height: 48px; border: 3px solid rgba(31,61,51,0.15); border-top-color: #1F3D33; border-radius: 50%; animation: zypac-spin 0.8s linear infinite; margin-bottom: 20px;"></div>
+        <h2 style="font-size: 1.15rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 6px 0; color: #1F3D33;">ZYPAC Portal</h2>
+        <p style="font-size: 0.85rem; color: #6B6B6B; margin: 0;">Loading Youth Parliament environment...</p>
+        <noscript>
+          <p style="margin-top: 15px; color: #b91c1c;">JavaScript is required to display the parliamentary portal.</p>
+        </noscript>
+      </div>
+      <style>
+        @keyframes zypac-spin { to { transform: rotate(360deg); } }
+      </style>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-

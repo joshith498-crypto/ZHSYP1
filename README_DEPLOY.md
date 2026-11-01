@@ -1,27 +1,40 @@
-# ZYPAC Deployment Guide (Cloudflare & GitHub Pages)
+# ZYPAC Deployment Guide (GitHub Pages & Cloudflare)
 
-This repository is optimized and verified for seamless one-click deployment on **Cloudflare Pages / Cloudflare Workers** as well as **GitHub Pages**, with full cross-device compatibility (mobile, tablet, desktop, touch screens, safe-area insets).
+This repository is optimized and verified for seamless one-click deployment on **GitHub Pages** as well as **Cloudflare Pages / Workers**, with complete cross-device responsiveness.
 
 ---
 
-## ⚡ Cloudflare Deployment Fix ("lockfile had changes, but lockfile is frozen")
+## 🛠️ GitHub Pages White Screen Fix
 
-### Why the Error Happened in Cloudflare:
-In your Cloudflare dashboard build log:
-```text
-Installing project dependencies: bun install --frozen-lockfile
-error: lockfile had changes, but lockfile is frozen
-note: dependencies in package.json changed since bun.lock was saved: esbuild changed from ^0.25.0 to ^0.28.0
-```
-Cloudflare automatically detects `bun.lock` in the repository and runs `bun install --frozen-lockfile`. When `package.json` was updated to support Vite 8 and React 19, the existing lockfile was frozen and rejected the updated `esbuild` version.
+If your GitHub Actions build passed ("Deployed to Pages") but visiting the site showed a **blank white screen**, here is why and how it is fixed:
 
-### The Solutions Included in This Release:
+### 1. Root Cause 1: Missing Trailing Slash on Repository URLs
+- **The Issue**: On GitHub Pages, repository sites are hosted at `https://<username>.github.io/<repo-name>/`.
+  When a visitor or browser opens `https://<username>.github.io/<repo-name>` (without the trailing `/`), relative assets like `./assets/index.js` resolve to `https://<username>.github.io/assets/index.js` (at the root instead of inside `/ZHSYP1/`), resulting in a 404 HTML response and a blank white screen!
+- **The Solution**: 
+  - In `vite.config.ts`, Vite now detects `GITHUB_REPOSITORY` in GitHub Actions and automatically configures `base: '/ZHSYP1/'`. All script and CSS links resolve to the exact absolute repository path.
+  - In `index.html`, an instant inline script in `<head>` automatically detects missing trailing slashes on `github.io` and normalizes the URL to `https://<username>.github.io/ZHSYP1/` before scripts evaluate.
+  - An `#initial-loading` indicator displays while React initializes, and an `<ErrorBoundary>` prevents fatal render errors from causing a white screen.
 
-#### Solution 1: Use the Updated Repository Files (Instant Fix)
-1. The repository now includes:
-   - A synchronized `bun.lock` matched to `package.json` using Bun 1.4.4.
-   - A `bunfig.toml` with `frozen = false`, preventing Bun from failing build pipelines.
-   - A `wrangler.jsonc` configured for Cloudflare with SPA fallback routing:
+### 2. Root Cause 2: GitHub Pages Source Setting in GitHub
+Ensure your repository's GitHub Pages settings use **GitHub Actions**:
+1. In your GitHub repository (`joshith498-crypto/ZHSYP1`), click the **Settings** tab.
+2. In the left sidebar, click **Pages**.
+3. Under **Build and deployment > Source**:
+   - Select **GitHub Actions** (do NOT select "Deploy from a branch").
+   - *Why?* If "Deploy from a branch" is selected, GitHub Pages ignores the compiled `dist/` directory from the workflow and tries to serve raw unbuilt TypeScript source files from the `main` branch root, resulting in a blank screen.
+4. Push your changes or trigger the workflow under **Actions** → **Deploy to GitHub Pages** → **Run workflow**.
+
+---
+
+## ⚡ Cloudflare Pages / Workers Deployment
+
+### Fix for "lockfile had changes, but lockfile is frozen":
+1. Cloudflare automatically detects `bun.lock` and executes `bun install --frozen-lockfile`.
+2. This project includes:
+   - A synchronized `bun.lock` matching `package.json`.
+   - A `bunfig.toml` with `frozen = false`.
+   - A `wrangler.jsonc` configured with SPA routing:
      ```jsonc
      {
        "name": "zhsyp-portal",
@@ -33,37 +46,12 @@ Cloudflare automatically detects `bun.lock` in the repository and runs `bun inst
        }
      }
      ```
-   - Cloudflare `_redirects` and `_headers` in `/public` for instant client-side routing.
-2. Push or commit these files to your GitHub repository `joshith498-crypto/ZHSYP1`.
-3. Cloudflare will automatically trigger a new build and succeed!
-
-#### Solution 2: Change Cloudflare Dashboard Build Settings (1-Click Fix in UI)
-If you prefer to configure it directly in the Cloudflare dashboard:
-1. In Cloudflare, go to **Workers & Pages** → **zhsyp-portal** → **Settings** → **Builds & deployments**.
-2. Click **Edit build configuration**:
-   - **Framework preset**: `Vite` (or `None`)
-   - **Build command**: `bun run build` (or `npm run build`)
-   - **Build output directory**: `dist`
-   - **Root directory**: `/`
-3. Under **Environment variables**, click **Add variable**:
-   - Variable name: `BUN_INSTALL_FROZEN_LOCKFILE`
-   - Value: `0`
-4. Click **Save and Deploy**. Your build will pass immediately.
+   - Cloudflare `_redirects` and `_headers` in `/public` for instant SPA fallback routing.
 
 ---
 
-## 🚀 GitHub Pages Deployment
+## 📦 Downloadable Files Included
 
-### Fix for "Dependencies lock file is not found" in GitHub Actions:
-- We removed `cache: 'npm'` from `.github/workflows/deploy.yml` and committed a complete `package-lock.json`.
-- In GitHub, go to **Settings** → **Pages** → under **Build and deployment > Source**, choose **GitHub Actions**.
-- On push, the included `.github/workflows/deploy.yml` will automatically build and publish to `https://<username>.github.io/<repo-name>/`.
-
----
-
-## 📱 Universal Device Compatibility & Responsive Features
-
-- **Safe-Area Insets**: `<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />` with `env(safe-area-inset-bottom)` to accommodate iPhones, iPads, and mobile navigation bars.
-- **Touch-First Accessibility**: Minimum 44px tap targets for mobile drawers, modal close buttons, navigation links, and administrative controls.
-- **Horizontal Overflow Protection**: `overflow-x: hidden` and constrained ambient gradients prevent horizontal drift on screens from 320px up to 4K displays.
-- **Refined Typography**: Loaded Google Fonts `Plus Jakarta Sans` for clean UI reading, `Cinzel` for parliamentary crests, `Outfit` for modern badges and numbers, and `Cormorant Garamond` for classical statesman headers.
+1. **`zypac_github_repo_source.zip`**: Complete source code ready to push to your GitHub repo, including `.github/workflows/deploy.yml`, synchronized `bun.lock`, `bunfig.toml`, and dynamic `vite.config.ts`.
+2. **`zypac_github_pages_dist.zip`**: Pre-built static distribution ready for instant deployment to GitHub Pages (configured for `/ZHSYP1/`).
+3. **`zypac_website.zip`**: Standalone portable distribution with relative paths for local viewing, Cloudflare Pages, Netlify, or custom hosting.
