@@ -14,11 +14,11 @@ import {
 } from './logic';
 import { UpdateItem } from '../types';
 
-test('verifyAdminCredentials accepts xyz and b1234 strictly', () => {
-  assert.equal(verifyAdminCredentials('xyz', 'b1234'), true);
-  assert.equal(verifyAdminCredentials(' xyz ', 'b1234'), true); // trimmed
-  assert.equal(verifyAdminCredentials('admin', 'b1234'), false);
-  assert.equal(verifyAdminCredentials('xyz', 'wrongpass'), false);
+test('verifyAdminCredentials accepts Zhs and Zhs@2026 strictly', () => {
+  assert.equal(verifyAdminCredentials('Zhs', 'Zhs@2026'), true);
+  assert.equal(verifyAdminCredentials(' Zhs ', 'Zhs@2026'), true); // trimmed
+  assert.equal(verifyAdminCredentials('admin', 'Zhs@2026'), false);
+  assert.equal(verifyAdminCredentials('Zhs', 'wrongpass'), false);
   assert.equal(verifyAdminCredentials('', ''), false);
 });
 

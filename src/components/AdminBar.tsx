@@ -5,14 +5,16 @@
 
 import React, { useState } from 'react';
 import { PageId } from '../types';
-import { PAGE_TITLES } from '../utils/logic';
-import { ShieldCheck, Edit3, RotateCcw } from 'lucide-react';
+import { PAGE_TITLES, ADMIN_USERNAME } from '../utils/logic';
+import { ShieldCheck, Edit3, RotateCcw, GitCommit, Globe, Loader2 } from 'lucide-react';
 
 interface AdminBarProps {
   currentPage: PageId;
   onOpenPageEditor: () => void;
   onEditBranding: () => void;
   onOpenPublish: () => void;
+  onQuickPushToGitHub?: () => void;
+  quickPushLoading?: boolean;
   onResetDefaults: () => void;
   onLogout: () => void;
 }
@@ -22,6 +24,8 @@ export const AdminBar: React.FC<AdminBarProps> = ({
   onOpenPageEditor,
   onEditBranding,
   onOpenPublish,
+  onQuickPushToGitHub,
+  quickPushLoading,
   onResetDefaults,
 }) => {
   const [showConfirmReset, setShowConfirmReset] = useState(false);
@@ -33,7 +37,7 @@ export const AdminBar: React.FC<AdminBarProps> = ({
           <span className="flex h-2 w-2 rounded-full bg-[#B08D57] animate-ping" />
           <div className="flex items-center gap-1.5 font-medium">
             <ShieldCheck className="w-4 h-4 text-[#B08D57]" />
-            <span>Admin Active: <strong className="text-[#FAF8F5]">xyz</strong></span>
+            <span>Admin Active: <strong className="text-[#FAF8F5]">{ADMIN_USERNAME}</strong></span>
           </div>
           <span className="hidden md:inline text-white/50">|</span>
           <span className="hidden md:inline text-white/80">
@@ -42,13 +46,34 @@ export const AdminBar: React.FC<AdminBarProps> = ({
         </div>
 
         <div className="flex items-center space-x-2">
+          {onQuickPushToGitHub && (
+            <button
+              onClick={onQuickPushToGitHub}
+              disabled={quickPushLoading}
+              className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-sm font-semibold transition-colors cursor-pointer shadow-xs disabled:opacity-50"
+              title="1-Click commit directly into GitHub repo (triggers automatic Netlify deploy for all visitors)"
+            >
+              {quickPushLoading ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
+                  <span>Pushing to GitHub...</span>
+                </>
+              ) : (
+                <>
+                  <GitCommit className="w-3.5 h-3.5 text-emerald-200" />
+                  <span>⚡ 1-Click Push to Git &amp; Netlify</span>
+                </>
+              )}
+            </button>
+          )}
+
           <button
             onClick={onOpenPublish}
-            className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-sm font-semibold transition-colors cursor-pointer shadow-xs animate-pulse"
-            title="Publish changes so all visitors on Netlify see them"
+            className="inline-flex items-center gap-1 px-2.5 py-1 text-white/90 hover:text-white border border-white/20 hover:border-white/40 rounded-sm transition-colors cursor-pointer"
+            title="Publish options: Drag-and-drop ZIP or HTML download"
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-200" />
-            <span>Publish to Netlify / Everyone</span>
+            <Globe className="w-3 h-3 text-[#B08D57]" />
+            <span className="hidden sm:inline">Publish Options</span>
           </button>
 
           <button

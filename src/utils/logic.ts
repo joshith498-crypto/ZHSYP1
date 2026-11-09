@@ -6,8 +6,8 @@
 import { DEFAULT_APP_DATA } from '../data/defaultData';
 import { AppData, PageId, UpdateItem } from '../types';
 
-export const ADMIN_USERNAME = 'xyz';
-export const ADMIN_PASSWORD = 'b1234';
+export const ADMIN_USERNAME = 'Zhs';
+export const ADMIN_PASSWORD = 'Zhs@2026';
 export const STORAGE_KEY = 'zypac_app_state_v2';
 export const ADMIN_AUTH_KEY = 'zypac_admin_session_v1';
 
@@ -36,8 +36,8 @@ export const PAGE_TITLES: Record<PageId, string> = {
 };
 
 /**
- * Verify admin credentials strictly matching requirements:
- * Username: xyz, Password: b1234
+ * Verify admin credentials strictly:
+ * Username: Zhs, Password: Zhs@2026
  */
 export function verifyAdminCredentials(user: string, pass: string): boolean {
   if (!user || !pass) return false;

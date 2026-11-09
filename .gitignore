@@ -1,8 +1,12 @@
 node_modules/
 build/
 dist/
+dist_standalone/
 coverage/
 .DS_Store
 *.log
+*.zip
 .env*
 !.env.example
+bun.lock
+bunfig.toml

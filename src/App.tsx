@@ -26,6 +26,8 @@ import { AdminBar } from './components/AdminBar';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { AdminEditModal, EditModalTarget } from './components/AdminEditModal';
 import { PublishModal } from './components/PublishModal';
+import { pushDataToGitHub, getSavedGitHubConfig } from './utils/githubSync';
+import { CheckCircle2, AlertCircle, ExternalLink, X as CloseIcon } from 'lucide-react';
 
 import { HomeView } from './components/views/HomeView';
 import { AboutView } from './components/views/AboutView';
@@ -103,11 +105,45 @@ export default function App() {
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<EditModalTarget | null>(null);
+  const [quickPushing, setQuickPushing] = useState(false);
+  const [quickPushBanner, setQuickPushBanner] = useState<{
+    type: 'success' | 'error';
+    message: string;
+    url?: string;
+  } | null>(null);
 
   // Sync data updates to localStorage
   const updateData = (newData: AppData) => {
     setData(newData);
     saveStoredAppData(newData);
+  };
+
+  // 1-Click Push directly into GitHub repository (triggers Netlify auto-deploy)
+  const handleQuickPushToGitHub = async () => {
+    setQuickPushing(true);
+    setQuickPushBanner(null);
+    const cfg = getSavedGitHubConfig();
+    const res = await pushDataToGitHub(data, {
+      token: cfg.token,
+      owner: cfg.owner,
+      repo: cfg.repo,
+      branch: cfg.branch,
+    });
+    setQuickPushing(false);
+
+    if (res.success) {
+      setQuickPushBanner({
+        type: 'success',
+        message: `Pushed commit ${res.commitSha} to GitHub! Netlify is auto-deploying to all visitors right now.`,
+        url: res.commitUrl,
+      });
+      setTimeout(() => setQuickPushBanner(null), 15000);
+    } else {
+      setQuickPushBanner({
+        type: 'error',
+        message: res.error || 'Failed to push to GitHub.',
+      });
+    }
   };
 
   const handleLoginSuccess = () => {
@@ -317,14 +353,55 @@ export default function App() {
 
       {/* Admin Action Bar when Authenticated */}
       {isAdmin && (
-        <AdminBar
-          currentPage={currentPage}
-          onOpenPageEditor={handleOpenPageEditor}
-          onEditBranding={() => setEditTarget({ type: 'site_branding', data: data.branding })}
-          onOpenPublish={() => setPublishModalOpen(true)}
-          onResetDefaults={handleResetDefaults}
-          onLogout={handleLogout}
-        />
+        <>
+          <AdminBar
+            currentPage={currentPage}
+            onOpenPageEditor={handleOpenPageEditor}
+            onEditBranding={() => setEditTarget({ type: 'site_branding', data: data.branding })}
+            onOpenPublish={() => setPublishModalOpen(true)}
+            onQuickPushToGitHub={handleQuickPushToGitHub}
+            quickPushLoading={quickPushing}
+            onResetDefaults={handleResetDefaults}
+            onLogout={handleLogout}
+          />
+
+          {quickPushBanner && (
+            <div
+              className={`px-4 py-2 text-xs flex items-center justify-between border-b ${
+                quickPushBanner.type === 'success'
+                  ? 'bg-emerald-900 text-emerald-100 border-emerald-700'
+                  : 'bg-red-900 text-red-100 border-red-700'
+              }`}
+            >
+              <div className="max-w-7xl mx-auto w-full flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  {quickPushBanner.type === 'success' ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+                  ) : (
+                    <AlertCircle className="w-4 h-4 text-red-300 shrink-0" />
+                  )}
+                  <span>{quickPushBanner.message}</span>
+                  {quickPushBanner.url && (
+                    <a
+                      href={quickPushBanner.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline font-semibold text-emerald-200 hover:text-white inline-flex items-center gap-0.5 ml-1"
+                    >
+                      View on GitHub <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
+                </div>
+                <button
+                  onClick={() => setQuickPushBanner(null)}
+                  className="p-1 text-white/70 hover:text-white rounded cursor-pointer"
+                >
+                  <CloseIcon className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Main Container */}

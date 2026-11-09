@@ -86,11 +86,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Admin status / Login action */}
           <div className="hidden sm:flex items-center space-x-2.5">
-            {isAdmin ? (
+              {isAdmin ? (
               <div className="flex items-center space-x-2 bg-[#1F3D33]/10 border border-[#1F3D33]/20 px-3 py-2 rounded-sm">
                 <span className="flex h-2 w-2 rounded-full bg-[#1F3D33] animate-pulse" />
                 <span className="text-xs font-semibold text-[#1F3D33] uppercase tracking-wide">
-                  Admin: xyz
+                  Admin Active
                 </span>
                 <button
                   onClick={onLogout}
@@ -158,7 +158,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {isAdmin ? (
               <div className="flex items-center justify-between px-3 py-2 bg-[#1F3D33]/5 rounded-sm">
                 <span className="text-xs font-semibold text-[#1F3D33]">
-                  Admin Session Active (xyz)
+                  Admin Session Active
                 </span>
                 <button
                   onClick={() => {
@@ -178,7 +178,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 }}
                 className="w-full text-center py-2 px-3 text-sm font-medium text-[#1F3D33] border border-[#1F3D33] rounded-sm hover:bg-[#1F3D33] hover:text-[#FAF8F5] transition-colors"
               >
-                Admin Login (xyz / b1234)
+                Secretariat Admin Login
               </button>
             )}
           </div>

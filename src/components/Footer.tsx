@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = ({
               {isAdmin ? (
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#1F3D33]/10 text-[#1F3D33] text-xs font-semibold rounded-sm">
                   <Check className="w-3.5 h-3.5 text-[#1F3D33]" />
-                  Admin Mode Active (xyz)
+                  Admin Mode Active
                 </div>
               ) : (
                 <button
