@@ -54,3 +54,5 @@ console.log(`[inline-build] Clean self-contained dist/index.html created: ${kb} 
 // Write identical 404.html
 fs.writeFileSync(path.join(distDir, '404.html'), html, 'utf8');
 fs.writeFileSync(path.join(distDir, '.nojekyll'), '', 'utf8');
+fs.writeFileSync(path.join(distDir, '_redirects'), '/* /index.html 200\n', 'utf8');
+fs.writeFileSync(path.join(distDir, '_headers'), '/*\n  X-Frame-Options: SAMEORIGIN\n  X-Content-Type-Options: nosniff\n', 'utf8');

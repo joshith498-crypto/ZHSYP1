@@ -25,6 +25,7 @@ import { Footer } from './components/Footer';
 import { AdminBar } from './components/AdminBar';
 import { AdminLoginModal } from './components/AdminLoginModal';
 import { AdminEditModal, EditModalTarget } from './components/AdminEditModal';
+import { PublishModal } from './components/PublishModal';
 
 import { HomeView } from './components/views/HomeView';
 import { AboutView } from './components/views/AboutView';
@@ -100,6 +101,7 @@ export default function App() {
   });
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
+  const [publishModalOpen, setPublishModalOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<EditModalTarget | null>(null);
 
   // Sync data updates to localStorage
@@ -319,6 +321,7 @@ export default function App() {
           currentPage={currentPage}
           onOpenPageEditor={handleOpenPageEditor}
           onEditBranding={() => setEditTarget({ type: 'site_branding', data: data.branding })}
+          onOpenPublish={() => setPublishModalOpen(true)}
           onResetDefaults={handleResetDefaults}
           onLogout={handleLogout}
         />
@@ -533,6 +536,14 @@ export default function App() {
         target={editTarget}
         onClose={() => setEditTarget(null)}
         onSave={handleSaveModalTarget}
+      />
+
+      {/* Publish & Export for Netlify / Everyone */}
+      <PublishModal
+        isOpen={publishModalOpen}
+        onClose={() => setPublishModalOpen(false)}
+        data={data}
+        onImportData={(imported) => updateData(imported)}
       />
     </div>
   );

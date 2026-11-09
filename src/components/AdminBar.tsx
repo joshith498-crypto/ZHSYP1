@@ -12,6 +12,7 @@ interface AdminBarProps {
   currentPage: PageId;
   onOpenPageEditor: () => void;
   onEditBranding: () => void;
+  onOpenPublish: () => void;
   onResetDefaults: () => void;
   onLogout: () => void;
 }
@@ -20,6 +21,7 @@ export const AdminBar: React.FC<AdminBarProps> = ({
   currentPage,
   onOpenPageEditor,
   onEditBranding,
+  onOpenPublish,
   onResetDefaults,
 }) => {
   const [showConfirmReset, setShowConfirmReset] = useState(false);
@@ -40,6 +42,15 @@ export const AdminBar: React.FC<AdminBarProps> = ({
         </div>
 
         <div className="flex items-center space-x-2">
+          <button
+            onClick={onOpenPublish}
+            className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-sm font-semibold transition-colors cursor-pointer shadow-xs animate-pulse"
+            title="Publish changes so all visitors on Netlify see them"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-200" />
+            <span>Publish to Netlify / Everyone</span>
+          </button>
+
           <button
             onClick={onOpenPageEditor}
             className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#B08D57] hover:bg-[#9a7b4c] text-[#FAF8F5] rounded-sm font-semibold transition-colors cursor-pointer shadow-xs"

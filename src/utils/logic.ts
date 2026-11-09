@@ -121,20 +121,24 @@ export function loadStoredAppData(): AppData {
   if (typeof window === 'undefined') {
     return DEFAULT_APP_DATA;
   }
+  // Check if an embedded or preloaded app data exists in the page (for published deployments)
+  const embedded = (window as unknown as { __INITIAL_ZYPAC_DATA__?: AppData }).__INITIAL_ZYPAC_DATA__;
+  const baseData = embedded && typeof embedded === 'object' && embedded.home ? embedded : DEFAULT_APP_DATA;
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_APP_DATA;
+    if (!raw) return baseData;
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object' || !parsed.home || !parsed.schedule) {
-      return DEFAULT_APP_DATA;
+      return baseData;
     }
     // Ensure branding exists
     if (!parsed.branding) {
-      parsed.branding = DEFAULT_APP_DATA.branding;
+      parsed.branding = baseData.branding;
     }
     return parsed as AppData;
   } catch {
-    return DEFAULT_APP_DATA;
+    return baseData;
   }
 }
 
