@@ -166,28 +166,28 @@ export const DEFAULT_APP_DATA: AppData = {
       {
         "id": "ls-1",
         "sessionLabel": "Session 1",
-        "timeRange": "",
+        "timeRange": "10:00 AM-10:45 AM",
         "activityTitle": "Roll Call & Opening Statements",
-        "notes": "Admin fills exact timing slot"
+        "notes": ""
       },
       {
         "id": "ls-2",
         "sessionLabel": "Session 2",
-        "timeRange": "",
+        "timeRange": "11:00AM-11:45AM",
         "activityTitle": "Question Hour & Structured Parliamentary Debate",
         "notes": "No cross-examination, no rebuttals"
       },
       {
         "id": "ls-3",
         "sessionLabel": "Session 3",
-        "timeRange": "",
+        "timeRange": "11:50AM-12:30PM",
         "activityTitle": "Tabling of Amendments & Division Voting",
         "notes": "Clause-by-clause reading & formal voting"
       },
       {
         "id": "ls-4",
         "sessionLabel": "Session 4",
-        "timeRange": "",
+        "timeRange": "1:00PM+1:45PM",
         "activityTitle": "Summary & Speaker's Closing Session",
         "notes": "Rapporteur report & final resolution adoption"
       }
@@ -196,28 +196,28 @@ export const DEFAULT_APP_DATA: AppData = {
       {
         "id": "aippm-1",
         "sessionLabel": "Session 1",
-        "timeRange": "",
+        "timeRange": "10:00AM-10:45AM",
         "activityTitle": "Roll Call & Opening Positions by Party Leaders",
-        "notes": "Admin fills exact timing slot"
+        "notes": ""
       },
       {
         "id": "aippm-2",
         "sessionLabel": "Session 2",
-        "timeRange": "",
+        "timeRange": "11:00AM-11:45AM",
         "activityTitle": "Structured Deliberation on Fourth Estate Safeguards",
-        "notes": "Sequential turns without rebuttals"
+        "notes": ""
       },
       {
         "id": "aippm-3",
         "sessionLabel": "Session 3",
-        "timeRange": "",
+        "timeRange": "11:45AM-12:30PM",
         "activityTitle": "Cross-Party Consultation & Consensus-Building",
-        "notes": "Joint drafting of compromise language"
+        "notes": ""
       },
       {
         "id": "aippm-4",
         "sessionLabel": "Session 4",
-        "timeRange": "",
+        "timeRange": "1:00PM-1:45PM",
         "activityTitle": "Adoption of Final Communiqué & Adjournment",
         "notes": "Formal Communiqué ratification & Chair address"
       }
