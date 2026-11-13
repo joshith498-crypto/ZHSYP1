@@ -196,7 +196,7 @@ export const DEFAULT_APP_DATA: AppData = {
       {
         "id": "aippm-1",
         "sessionLabel": "Session 1",
-        "timeRange": "10:00AM-10:45AM",
+        "timeRange": "10:15-11:00AM",
         "activityTitle": "Roll Call & Opening Positions by Party Leaders",
         "notes": ""
       },
