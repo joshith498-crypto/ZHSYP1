@@ -166,7 +166,7 @@ export const DEFAULT_APP_DATA: AppData = {
       {
         "id": "ls-1",
         "sessionLabel": "Session 1",
-        "timeRange": "10:00 AM-10:45 AM",
+        "timeRange": "10:15AM-11:00AM",
         "activityTitle": "Roll Call & Opening Statements",
         "notes": ""
       },
@@ -174,14 +174,14 @@ export const DEFAULT_APP_DATA: AppData = {
         "id": "ls-2",
         "sessionLabel": "Session 2",
         "timeRange": "11:00AM-11:45AM",
-        "activityTitle": "Question Hour & Structured Parliamentary Debate",
+        "activityTitle": "Continuation of Opening Statements and question hour",
         "notes": "No cross-examination, no rebuttals"
       },
       {
         "id": "ls-3",
         "sessionLabel": "Session 3",
         "timeRange": "11:50AM-12:30PM",
-        "activityTitle": "Tabling of Amendments & Division Voting",
+        "activityTitle": "Question hour and unmoderated Caucus ",
         "notes": "Clause-by-clause reading & formal voting"
       },
       {
@@ -189,7 +189,7 @@ export const DEFAULT_APP_DATA: AppData = {
         "sessionLabel": "Session 4",
         "timeRange": "1:00PM+1:45PM",
         "activityTitle": "Summary & Speaker's Closing Session",
-        "notes": "Rapporteur report & final resolution adoption"
+        "notes": "Bills Passing"
       }
     ],
     "aippmSlots": [
